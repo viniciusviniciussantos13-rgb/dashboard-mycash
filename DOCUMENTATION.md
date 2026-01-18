@@ -3,7 +3,7 @@
 ## Progresso
 - [x] PROMPT 0: Análise e Planejamento Inicial
 - [x] PROMPT 1: Estrutura Base e Configuração
-- [ ] PROMPT 2: Sistema de Layout e Navegação Desktop
+- [x] PROMPT 2: Sistema de Layout e Navegação Desktop
 - [ ] PROMPT 3: Sistema de Layout e Navegação Mobile
 - [ ] PROMPT 4: Context Global e Gerenciamento de Estado
 - [ ] PROMPT 5: Cards de Resumo Financeiro
@@ -331,6 +331,10 @@ N/A - Análise apenas
 ### Build
 Tentativas: 1 | Erros: 0 | Status: ✅ Sucesso
 
+### 💾 Commit
+**feat:** estrutura base e configuração inicial do projeto  
+**Hash:** `8fac873`
+
 ### 📁 Arquivos Criados
 
 **Configuração:**
@@ -363,16 +367,51 @@ Tentativas: 1 | Erros: 0 | Status: ✅ Sucesso
 
 ## PROMPT 2: Sistema de Layout e Navegação Desktop
 
-**Status:** ⏳ | **Data:** - | **Build:** N/A
+**Status:** ✅ | **Data:** 16/01/2025 | **Build:** ✅ (2 tentativas)
 
 ### Implementado
-_Será preenchido durante implementação_
+- Componente Sidebar com estados expandido/colapsado
+- Hook useSidebar para gerenciar estado (persiste em localStorage)
+- Componente Logo com variantes default e small
+- Componente NavItem com estados ativo/inativo e tooltips
+- Componente UserInfo que adapta conforme estado da sidebar
+- Botão toggle circular na borda direita da sidebar com ícone rotativo
+- Transições suaves entre estados (300ms duration, ease-in-out)
+- Tooltip que aparece ao passar mouse quando sidebar está colapsada (delay 300ms)
+- Item ativo com fundo preto (neutral-1100), texto branco (surface-500) e ícone verde-limão (primary-500)
+- MainContainer ajusta margin-left dinamicamente conforme estado da sidebar
+- Sidebar visível apenas no desktop (≥1280px), oculta em mobile/tablet
+- Integração com React Router para detectar rota ativa
 
 ### Tokens
-_Será preenchido durante implementação_
+
+**Semânticas utilizadas:**
+- `primary-500`: `#D7FF00` (verde-limão - ícone ativo)
+- `surface-500`: `#FFFFFF` (branco - texto em item ativo)
+- `neutral-1100`: `#080b12` (preto - fundo item ativo)
+
+**Primitivas utilizadas:**
+- `neutral-100`, `neutral-300`, `neutral-1100` (bordas, hovers, texto)
+- `space-{8,12,14,16,32,56}` (espaçamentos internos)
+- `shape-100`: `100px` (border-radius pill)
+
+**Conversões:**
+- Nenhuma - todos os valores usam tokens do design system
 
 ### Build
-_Pendente_
+Tentativas: 2 | Erros: 1 (import não usado corrigido) | Status: ✅ Sucesso
+
+### 📁 Arquivos Criados
+
+**Components:**
+- `src/components/layout/Sidebar/Sidebar.tsx` - Componente principal da sidebar
+- `src/components/layout/Sidebar/Logo.tsx` - Logo com variantes
+- `src/components/layout/Sidebar/NavItem.tsx` - Item de navegação com tooltip
+- `src/components/layout/Sidebar/UserInfo.tsx` - Informações do usuário
+- `src/components/layout/MainContainer/MainContainer.tsx` - Container principal ajustável
+
+**Hooks:**
+- `src/hooks/useSidebar.ts` - Hook para gerenciar estado da sidebar
 
 ---
 
