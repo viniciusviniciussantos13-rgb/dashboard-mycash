@@ -57,34 +57,37 @@ export default function MenuDropdown({ isOpen, onClose }: MenuDropdownProps) {
     onClose()
   }
 
-  if (!isOpen) return null
-
   return (
     <>
       {/* Overlay escuro semi-transparente */}
-      <div
-        className="
-          fixed inset-0
-          bg-neutral-1100/50
-          z-40
-          transition-opacity duration-300 ease-in-out
-        "
-        onClick={onClose}
-        aria-hidden="true"
-      />
+      {isOpen && (
+        <div
+          className={`
+            fixed inset-0
+            bg-neutral-1100/50
+            z-40
+            transition-opacity duration-300 ease-in-out
+            ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}
+          `}
+          onClick={onClose}
+          aria-hidden="true"
+        />
+      )}
 
       {/* Menu Dropdown */}
-      <div
-        ref={menuRef}
-        className="
-          fixed top-16 left-0 right-0
-          bg-surface-500 border-b border-neutral-300
-          shadow-lg
-          z-50
-          transform transition-transform duration-300 ease-in-out
-        "
-        data-name="MenuDropdown"
-      >
+      {isOpen && (
+        <div
+          ref={menuRef}
+          className={`
+            fixed top-16 left-0 right-0
+            bg-surface-500 border-b border-neutral-300
+            shadow-lg
+            z-50
+            transform transition-transform duration-300 ease-in-out
+            ${isOpen ? 'translate-y-0' : '-translate-y-full'}
+          `}
+          data-name="MenuDropdown"
+        >
         {/* Header do menu com botão X */}
         <div className="flex items-center justify-between px-4 py-3 border-b border-neutral-300">
           <h2 className="label-medium text-neutral-1100">Menu</h2>
@@ -230,7 +233,8 @@ export default function MenuDropdown({ isOpen, onClose }: MenuDropdownProps) {
             Sair
           </button>
         </div>
-      </div>
+        </div>
+      )}
     </>
   )
 }
