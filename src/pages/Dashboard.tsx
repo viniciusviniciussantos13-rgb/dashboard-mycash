@@ -3,6 +3,7 @@ import SummaryCards from '@/components/dashboard/SummaryCards/SummaryCards'
 import ExpensesByCategoryCarousel from '@/components/dashboard/ExpensesByCategoryCarousel/ExpensesByCategoryCarousel'
 import FinancialFlowChart from '@/components/dashboard/FinancialFlowChart/FinancialFlowChart'
 import CreditCardsWidget from '@/components/dashboard/CreditCardsWidget/CreditCardsWidget'
+import UpcomingExpensesWidget from '@/components/dashboard/UpcomingExpensesWidget/UpcomingExpensesWidget'
 
 /**
  * Página principal do Dashboard
@@ -29,14 +30,7 @@ export default function Dashboard() {
 
           <div className="grid gap-8 lg:grid-cols-[2fr_1fr]">
             <FinancialFlowChart />
-            <div className="flex flex-col gap-8">
-              <div className="flex h-full w-full flex-col items-start gap-4 rounded-shape-20 border border-neutral-300 bg-surface-500 p-8">
-                <h4 className="text-sm font-semibold text-neutral-900">Próximas despesas</h4>
-                <p className="text-xs text-neutral-500">
-                  Este espaço será preenchido com a lista detalhada quando o próximo prompt for implementado.
-                </p>
-              </div>
-            </div>
+            <UpcomingExpensesWidget />
           </div>
         </div>
 
