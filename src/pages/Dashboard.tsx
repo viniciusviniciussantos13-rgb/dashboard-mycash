@@ -1,6 +1,7 @@
 import DashboardHeader from '@/components/dashboard/DashboardHeader/DashboardHeader'
 import SummaryCards from '@/components/dashboard/SummaryCards/SummaryCards'
 import ExpensesByCategoryCarousel from '@/components/dashboard/ExpensesByCategoryCarousel/ExpensesByCategoryCarousel'
+import FinancialFlowChart from '@/components/dashboard/FinancialFlowChart/FinancialFlowChart'
 
 /**
  * Página principal do Dashboard
@@ -18,6 +19,7 @@ export default function Dashboard() {
       <div className="w-full px-4 md:px-6 lg:px-8 pb-6 flex flex-col gap-6">
         <SummaryCards />
         <ExpensesByCategoryCarousel />
+        <FinancialFlowChart />
 
         <div className="w-full max-w-[1400px]">
           <div className="mt-6">
