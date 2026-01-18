@@ -1,33 +1,31 @@
 /**
- * Assets da Sidebar obtidos do Figma MCP
- * - Expanded (node-id: 2007:2145)
- * - Collapsed (node-id: 2007:2200)
+ * Assets da Sidebar obtidos do Figma MCP (node-id: 2007:2200)
  * URLs válidas por 7 dias
  */
 
-// Logo - 7 vetores SVG para construir "mycash+" (expanded)
+// Logo - 7 vetores SVG para construir "mycash+" (Default)
 export const logoAssets = {
-  vector: 'https://www.figma.com/api/mcp/asset/2c288f54-4150-4ff4-923a-043041cb23be',
-  vector1: 'https://www.figma.com/api/mcp/asset/0c73676e-f090-40ae-859c-f0d38e5cfe53',
-  vector2: 'https://www.figma.com/api/mcp/asset/8058e149-89d9-488c-8320-5150b72eeca1',
-  vector3: 'https://www.figma.com/api/mcp/asset/661c50ed-5b14-4d73-bcf5-a9527ece7130',
-  vector4: 'https://www.figma.com/api/mcp/asset/1a11ecb1-09eb-492f-893f-61a5794359f8',
-  vector5: 'https://www.figma.com/api/mcp/asset/8c1b2182-e457-4338-bb35-0551a6d2938f',
-  vector6: 'https://www.figma.com/api/mcp/asset/c1759d68-f302-4d2b-b9de-c3465bd8ce41',
+  vector: 'https://www.figma.com/api/mcp/asset/819b8b73-c4d3-4f14-abd1-a82b951197f4',
+  vector1: 'https://www.figma.com/api/mcp/asset/2b94efd2-e4b6-4582-8735-54a2bac1c321',
+  vector2: 'https://www.figma.com/api/mcp/asset/aab193c1-3a55-4d73-b799-9428dcdf1a0b',
+  vector3: 'https://www.figma.com/api/mcp/asset/646d5ee6-242b-4ce9-8ae7-28429e1c1f80',
+  vector4: 'https://www.figma.com/api/mcp/asset/73d7b060-3ff8-4186-bf8e-e9829faa5e13',
+  vector5: 'https://www.figma.com/api/mcp/asset/c6578670-d93c-4072-bcae-a8a168599b00',
+  vector6: 'https://www.figma.com/api/mcp/asset/9b51bc53-a80d-41d2-88b8-0bcede93fdb7',
 }
 
-// Logo small - versão colapsada (node-id: 2007:2200)
+// Logo Small - versão colapsada
 export const logoSmallAssets = {
-  top: 'https://www.figma.com/api/mcp/asset/48356eb0-4188-4635-99dc-e9242599b0c3',
-  down: 'https://www.figma.com/api/mcp/asset/cd6a6ce0-00ca-4582-a1a2-cdb2831c9cd0',
+  top: 'https://www.figma.com/api/mcp/asset/e56f5239-2035-470d-bb03-cbce07584274',
+  down: 'https://www.figma.com/api/mcp/asset/2bf11403-0d2d-4613-bb03-6b35e2928513',
 }
 
-// Ícones de navegação (expanded)
+// Ícones de navegação
 export const navIcons = {
-  home: 'https://www.figma.com/api/mcp/asset/bbe480ff-5977-4a5f-998c-5b51440bb19f',
-  creditCard: 'https://www.figma.com/api/mcp/asset/a9922efe-e99f-4f31-acaf-dd3a26239f6b',
-  toggle: 'https://www.figma.com/api/mcp/asset/086f32d8-c3a5-40cc-99a4-63bce117c227',
+  home: 'https://www.figma.com/api/mcp/asset/6fd803f3-61be-42a1-95cf-ac5cd566654e',
+  creditCard: 'https://www.figma.com/api/mcp/asset/2daf16dd-e646-4df6-8889-3839fe1d2e10',
+  toggle: 'https://www.figma.com/api/mcp/asset/e214873f-2d45-448b-b83b-88555fad3e8f',
 }
 
-// Avatar/Members (expanded)
-export const memberAvatar = 'https://www.figma.com/api/mcp/asset/723d3638-02ac-41e2-b7ac-b594ce65f028'
+// Avatar/Members
+export const memberAvatar = 'https://www.figma.com/api/mcp/asset/147f77e8-5727-4fb3-9d70-2d872b0c3eef'

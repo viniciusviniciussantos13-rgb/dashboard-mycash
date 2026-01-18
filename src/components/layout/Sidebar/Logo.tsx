@@ -2,8 +2,8 @@ import { logoAssets, logoSmallAssets } from '@/assets/sidebar-assets'
 
 /**
  * Componente Logo do mycash+
- * Suporta duas variantes: Default (completo) e Small (apenas ícone)
- * Usa os assets do Figma MCP
+ * Variantes: Default (completo) e Small (apenas "MY cash+")
+ * Usa os assets exatos do Figma MCP (node-id: 2007:2200)
  */
 type LogoProps = {
   variant?: 'default' | 'small'
@@ -13,19 +13,19 @@ type LogoProps = {
 export default function Logo({ variant = 'default', className = '' }: LogoProps) {
   if (variant === 'small') {
     return (
-      <div className={`flex flex-col gap-2 items-start justify-center ${className}`}>
-        <div className="h-6 w-[44.886px] relative shrink-0">
-          <img className="block max-w-none size-full" alt="mycash" src={logoSmallAssets.top} />
+      <div className={`flex flex-col gap-[3px] items-start justify-center relative shrink-0 w-full ${className}`}>
+        <div className="h-[24px] relative shrink-0 w-[44.886px]">
+          <img className="block max-w-none size-full" alt="MY" src={logoSmallAssets.top} />
         </div>
-        <div className="h-[11.433px] w-[45.176px] relative shrink-0">
-          <img className="block max-w-none size-full" alt="+" src={logoSmallAssets.down} />
+        <div className="h-[11.433px] relative shrink-0 w-[45.176px]">
+          <img className="block max-w-none size-full" alt="cash+" src={logoSmallAssets.down} />
         </div>
       </div>
     )
   }
 
   return (
-    <div className={`h-[29.818px] w-[139.648px] relative ${className}`}>
+    <div className={`h-[29.818px] relative shrink-0 w-[139.648px] ${className}`}>
       <div className="absolute inset-[19.86%_0_26.18%_88.48%]">
         <img className="block max-w-none size-full" alt="" src={logoAssets.vector} />
       </div>
