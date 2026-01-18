@@ -116,11 +116,11 @@ export default function UpcomingExpensesWidget() {
         </button>
       </header>
 
-      <div className="mt-8 divide-y divide-neutral-200">
+      <div className="mt-8 divide-y divide-neutral-200 max-h-[320px] space-y-2 overflow-y-auto pr-2">
         {pendingExpenses.map((expense) => (
           <article
             key={expense.id}
-            className="flex items-center justify-between gap-4 py-4 transition duration-200 hover:-translate-y-1 hover:shadow-md"
+            className="flex items-center justify-between gap-4 py-3 transition duration-200 hover:-translate-y-1 hover:shadow-md"
           >
             <div className="flex flex-1 flex-col gap-1">
               <span className="text-lg font-semibold text-neutral-1100">{expense.description}</span>

@@ -4,6 +4,7 @@ import ExpensesByCategoryCarousel from '@/components/dashboard/ExpensesByCategor
 import FinancialFlowChart from '@/components/dashboard/FinancialFlowChart/FinancialFlowChart'
 import CreditCardsWidget from '@/components/dashboard/CreditCardsWidget/CreditCardsWidget'
 import UpcomingExpensesWidget from '@/components/dashboard/UpcomingExpensesWidget/UpcomingExpensesWidget'
+import TransactionsTable from '@/components/dashboard/TransactionsTable/TransactionsTable'
 
 /**
  * Página principal do Dashboard
@@ -31,6 +32,10 @@ export default function Dashboard() {
           <div className="grid gap-8 lg:grid-cols-[2fr_1fr]">
             <FinancialFlowChart />
             <UpcomingExpensesWidget />
+          </div>
+
+          <div className="mt-8">
+            <TransactionsTable />
           </div>
         </div>
 
