@@ -50,7 +50,7 @@ type MetricCardProps = {
 
 function MetricCard({ label, value, icon, iconContainerClass, valueColor }: MetricCardProps) {
   return (
-    <article className="flex min-h-[180px] flex-col gap-3 rounded-shape-20 border border-neutral-300 bg-white px-6 py-5 shadow-sm">
+    <article className="flex min-h-[180px] flex-col gap-3 rounded-shape-20 border border-neutral-300 bg-surface-500 px-6 py-5 shadow-sm">
       <div className="flex items-start justify-between gap-3">
         <span className="label-medium font-semibold text-neutral-1100">{label}</span>
         {icon && (
@@ -68,7 +68,7 @@ function MetricCard({ label, value, icon, iconContainerClass, valueColor }: Metr
 
 function BalanceCard({ value }: { value: number }) {
   return (
-    <article className="flex min-h-[180px] flex-col gap-2 rounded-shape-20 border border-neutral-300 bg-white px-6 py-5 shadow-sm">
+    <article className="flex min-h-[180px] flex-col gap-2 rounded-shape-20 border border-neutral-300 bg-surface-500 px-6 py-5 shadow-sm">
       <span className="text-2xl font-semibold text-neutral-800">$</span>
       <span className="label-medium font-semibold text-neutral-1100">Saldo Total</span>
       <p className="text-heading-medium font-bold leading-tight text-blue-600">{formatCurrencyBRL(value)}</p>
