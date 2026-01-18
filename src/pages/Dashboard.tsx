@@ -1,4 +1,5 @@
 import DashboardHeader from '@/components/dashboard/DashboardHeader/DashboardHeader'
+import SummaryCards from '@/components/dashboard/SummaryCards/SummaryCards'
 
 /**
  * Página principal do Dashboard
@@ -6,21 +7,23 @@ import DashboardHeader from '@/components/dashboard/DashboardHeader/DashboardHea
  */
 export default function Dashboard() {
   return (
-    <div className="min-h-screen bg-neutral-100 w-full relative">
-      {/* Header com controles - largura total, colado ao sidebar */}
-      <div className="w-full relative">
+    <div className="min-h-screen bg-neutral-100 w-full">
+      {/* Header com controles - largura total */}
+      <div className="w-full">
         <DashboardHeader />
       </div>
 
       {/* Conteúdo do dashboard */}
-      <div className="px-6 pb-6 relative">
-        <div className="mt-6">
-          <h1 className="heading-x-small text-neutral-1100 mb-6">
-            Dashboard
-          </h1>
-          <p className="paragraph-small text-neutral-500">
-            Cards de resumo, gráficos e tabela serão implementados nos próximos prompts
-          </p>
+      <div className="w-full px-4 md:px-6 lg:px-8 pb-6 flex flex-col gap-6">
+        <SummaryCards />
+
+        <div className="w-full max-w-[1400px]">
+          <div className="mt-6">
+            <h1 className="heading-x-small text-neutral-1100 mb-6">Dashboard</h1>
+            <p className="paragraph-small text-neutral-500">
+              Cards de resumo, gráficos e tabela serão implementados nos próximos prompts
+            </p>
+          </div>
         </div>
       </div>
     </div>
