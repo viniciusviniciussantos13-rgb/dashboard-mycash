@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+
+  html {
+    font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-neutral-100 text-neutral-1100;
+    overflow-x: hidden;
+  }
+
+  #root {
+    width: 100%;
+    min-height: 100vh;
+  }
+}
+
+@layer utilities {
+  /* Layout fluido - obrigatório */
+  .container-fluid {
+    width: 100%;
+  }
+
+  .container-content {
+    @apply container-fluid;
+    @apply px-4 md:px-6 lg:px-8;
+    @apply lg:max-w-[1400px] xl:max-w-[1600px];
+    @apply mx-auto;
+  }
+}
