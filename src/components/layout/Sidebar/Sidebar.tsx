@@ -39,14 +39,21 @@ export default function Sidebar() {
         {/* Top section: Logo + Navigation */}
         <div className="flex flex-col gap-14 items-start p-0 w-full shrink-0">
           {isExpanded && <Logo variant="default" />}
+          {!isExpanded && (
+            <div className="flex flex-col gap-[4px]">
+              <span className="heading-small font-semibold text-neutral-1100">MY</span>
+              <span className="paragraph-small text-neutral-1100">cash+</span>
+            </div>
+          )}
 
-          <nav className={`flex flex-col items-start w-full ${isExpanded ? 'gap-0' : 'gap-2'} shrink-0`}>
+          <nav className={`flex flex-col items-start w-full ${isExpanded ? 'gap-0' : 'gap-6'} shrink-0`}>
             <NavItem
               to={ROUTES.DASHBOARD}
               iconSrc={navIcons.home}
               iconInsetClass="inset-[0.09%_0_-0.03%_0]"
               label="Home"
               isExpanded={isExpanded}
+              isCollapsed={!isExpanded}
             />
             <NavItem
               to={ROUTES.CARDS}
@@ -54,6 +61,7 @@ export default function Sidebar() {
               iconInsetClass="inset-[12.5%_0]"
               label="Cartões"
               isExpanded={isExpanded}
+              isCollapsed={!isExpanded}
             />
           </nav>
 

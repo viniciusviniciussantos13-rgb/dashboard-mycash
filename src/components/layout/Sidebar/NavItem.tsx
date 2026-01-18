@@ -11,9 +11,17 @@ type NavItemProps = {
   iconInsetClass: string
   label: string
   isExpanded: boolean
+  isCollapsed: boolean
 }
 
-export default function NavItem({ to, iconSrc, iconInsetClass, label, isExpanded }: NavItemProps) {
+export default function NavItem({
+  to,
+  iconSrc,
+  iconInsetClass,
+  label,
+  isExpanded,
+  isCollapsed,
+}: NavItemProps) {
   const location = useLocation()
   const isActive = location.pathname === to
 
@@ -36,7 +44,12 @@ export default function NavItem({ to, iconSrc, iconInsetClass, label, isExpanded
       title={!isExpanded ? label : undefined}
     >
       {/* Ícone - usa imagem do Figma MCP */}
-      <div className="overflow-clip relative shrink-0 size-4">
+      <div
+        className={`relative flex items-center justify-center ${
+          isCollapsed ? 'size-[48px] rounded-full' : 'overflow-clip size-4'
+        } ${isCollapsed && isActive ? 'bg-primary-500' : ''}`}
+        aria-hidden
+      >
         <div className={`absolute ${iconInsetClass}`}>
           <img className="block max-w-none size-full" alt={label} src={iconSrc} />
         </div>
