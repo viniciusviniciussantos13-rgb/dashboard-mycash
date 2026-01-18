@@ -10,7 +10,12 @@ import MembersWidget from './MembersWidget'
  * DashboardHeader - Barra de controles do dashboard
  * Contém busca, filtros, seletor de data e membros
  */
-export default function DashboardHeader() {
+type DashboardHeaderProps = {
+  onNewTransaction?: () => void
+  onAddMember?: () => void
+}
+
+export default function DashboardHeader({ onNewTransaction, onAddMember }: DashboardHeaderProps) {
   const { setSearchText } = useFinance()
   const [searchValue, setSearchValue] = useState('')
 
@@ -30,7 +35,7 @@ export default function DashboardHeader() {
         gap-2 lg:gap-0
         w-full mb-6
         pt-6
-        pl-0 lg:pl-0 pr-6 lg:pr-6
+        pl-0 pr-6 lg:pr-6
       "
       data-name="Navbar"
     >
@@ -49,7 +54,7 @@ export default function DashboardHeader() {
       {/* Seção direita: Membros e Nova Transação */}
       <div className="flex items-center gap-2 lg:gap-2">
         {/* Widget de membros */}
-        <MembersWidget />
+        <MembersWidget onAddMember={onAddMember} />
 
         {/* Botão Nova Transação */}
         <button
@@ -66,10 +71,7 @@ export default function DashboardHeader() {
             shrink-0
           "
           data-name="Btn"
-          onClick={() => {
-            // TODO: Abrir modal de nova transação (PROMPT 12)
-            console.log('Nova transação')
-          }}
+          onClick={() => onNewTransaction?.()}
         >
           {/* Ícone + - 16x16px conforme Figma */}
           <div className="overflow-clip relative shrink-0 size-4" data-name="fi-rr-plus">

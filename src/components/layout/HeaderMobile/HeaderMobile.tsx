@@ -2,6 +2,8 @@ import { useState } from 'react'
 import Logo from '../Sidebar/Logo'
 import MenuDropdown from './MenuDropdown'
 import { memberAvatar } from '@/assets/sidebar-assets'
+import { headerIcons } from '@/assets/dashboard-assets'
+import { useMobileFilters } from '@/contexts/MobileFiltersContext'
 
 /**
  * Componente HeaderMobile - Navegação Mobile/Tablet (<1024px)
@@ -16,6 +18,7 @@ import { memberAvatar } from '@/assets/sidebar-assets'
  */
 export default function HeaderMobile() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
+  const { open } = useMobileFilters()
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen)
@@ -43,25 +46,38 @@ export default function HeaderMobile() {
           <Logo variant="default" />
         </div>
 
-        {/* Avatar clicável à direita */}
-        <button
-          onClick={toggleMenu}
-          className="
-            relative shrink-0 size-10
-            rounded-full overflow-hidden
-            focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
-            transition-transform duration-200
-            active:scale-95
-          "
-          aria-label="Abrir menu"
-          aria-expanded={isMenuOpen}
-        >
-          <img
-            src={memberAvatar}
-            alt="Menu do usuário"
-            className="block max-w-none size-full rounded-full object-cover"
-          />
-        </button>
+        <div className="flex items-center gap-3">
+          <button
+            type="button"
+            className="flex items-center justify-center rounded-full border border-neutral-300 p-2"
+            onClick={open}
+            aria-label="Abrir filtros"
+          >
+            <img
+              src={headerIcons.settingsSliders}
+              alt="Filtro"
+              className="h-4 w-4"
+            />
+          </button>
+          <button
+            onClick={toggleMenu}
+            className="
+              relative shrink-0 size-10
+              rounded-full overflow-hidden
+              focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2
+              transition-transform duration-200
+              active:scale-95
+            "
+            aria-label="Abrir menu"
+            aria-expanded={isMenuOpen}
+          >
+            <img
+              src={memberAvatar}
+              alt="Menu do usuário"
+              className="block max-w-none size-full rounded-full object-cover"
+            />
+          </button>
+        </div>
       </header>
 
       {/* Menu Dropdown */}

@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { FinanceProvider } from './contexts/FinanceContext'
+import { MobileFiltersProvider, useMobileFilters } from './contexts/MobileFiltersContext'
 import { useSidebar } from './hooks/useSidebar'
 import Sidebar from './components/layout/Sidebar/Sidebar'
 import HeaderMobile from './components/layout/HeaderMobile/HeaderMobile'
@@ -8,33 +9,37 @@ import Dashboard from './pages/Dashboard'
 import Transactions from './pages/Transactions'
 import Cards from './pages/Cards'
 import Profile from './pages/Profile'
+import MobileFiltersModal from './components/modals/MobileFiltersModal'
 
 function App() {
   const { isExpanded, toggle } = useSidebar()
 
   return (
     <FinanceProvider>
-      <Router>
-        <div className="flex min-h-screen">
-          {/* Sidebar - apenas no desktop (≥1024px) */}
-          <Sidebar isExpanded={isExpanded} onToggle={toggle} />
-
-          {/* HeaderMobile - apenas em mobile/tablet (<1024px) */}
-          <HeaderMobile />
-
-          {/* Conteúdo principal */}
-          <MainContainer>
-            <Routes>
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/transactions" element={<Transactions />} />
-              <Route path="/cards" element={<Cards />} />
-              <Route path="/profile" element={<Profile />} />
-            </Routes>
-          </MainContainer>
-        </div>
-      </Router>
+      <MobileFiltersProvider>
+        <FiltersModalLayer />
+        <Router>
+          <div className="flex min-h-screen">
+            <Sidebar isExpanded={isExpanded} onToggle={toggle} />
+            <HeaderMobile />
+            <MainContainer>
+              <Routes>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/transactions" element={<Transactions />} />
+                <Route path="/cards" element={<Cards />} />
+                <Route path="/profile" element={<Profile />} />
+              </Routes>
+            </MainContainer>
+          </div>
+        </Router>
+      </MobileFiltersProvider>
     </FinanceProvider>
   )
+}
+
+function FiltersModalLayer() {
+  const { isOpen, close } = useMobileFilters()
+  return <MobileFiltersModal open={isOpen} onClose={close} />
 }
 
 export default App

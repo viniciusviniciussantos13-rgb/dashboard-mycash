@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from 'react'
 import FilterPopover from './FilterPopover'
 import { headerIcons } from '@/assets/dashboard-assets'
+import { useMobileFilters } from '@/contexts/MobileFiltersContext'
 
 /**
  * FilterButton - Botão que abre popover/modal de filtros
@@ -9,7 +10,9 @@ import { headerIcons } from '@/assets/dashboard-assets'
  */
 export default function FilterButton() {
   const [isOpen, setIsOpen] = useState(false)
+  const [isMobileView, setIsMobileView] = useState(false)
   const buttonRef = useRef<HTMLButtonElement>(null)
+  const { open } = useMobileFilters()
 
   // Fechar ao clicar fora
   useEffect(() => {
@@ -28,11 +31,24 @@ export default function FilterButton() {
     }
   }, [isOpen])
 
+  useEffect(() => {
+    const update = () => setIsMobileView(window.innerWidth < 1024)
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [])
+
   return (
     <div className="relative" ref={buttonRef as any}>
       <button
         ref={buttonRef}
-        onClick={() => setIsOpen(!isOpen)}
+        onClick={() => {
+          if (isMobileView) {
+            open()
+          } else {
+            setIsOpen(!isOpen)
+          }
+        }}
         className="
           flex items-center justify-center
           p-3

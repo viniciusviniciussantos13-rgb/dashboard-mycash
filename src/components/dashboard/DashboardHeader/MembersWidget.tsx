@@ -5,7 +5,11 @@ import { memberAvatars } from '@/assets/dashboard-assets'
  * MembersWidget - Widget de membros com avatares sobrepostos
  * Avatares têm efeito hover e seleção com borda preta + check verde
  */
-export default function MembersWidget() {
+type MembersWidgetProps = {
+  onAddMember?: () => void
+}
+
+export default function MembersWidget({ onAddMember }: MembersWidgetProps) {
   const { familyMembers, selectedMember, setSelectedMember } = useFinance()
 
   const handleMemberClick = (memberId: string) => {
@@ -100,8 +104,7 @@ export default function MembersWidget() {
       {/* Botão adicionar membro */}
       <button
         onClick={() => {
-          // TODO: Abrir modal de adicionar membro (PROMPT 13)
-          console.log('Adicionar membro')
+          onAddMember?.()
         }}
         className="
           relative shrink-0 size-11 -ml-2

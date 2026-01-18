@@ -28,7 +28,12 @@ const CARD_THEMES = {
 
 const cardsPerPage = 3
 
-export default function CreditCardsWidget() {
+type CreditCardsWidgetProps = {
+  onAddAccount?: () => void
+  onCardSelect?: (cardId: string) => void
+}
+
+export default function CreditCardsWidget({ onAddAccount, onCardSelect }: CreditCardsWidgetProps) {
   const { creditCards } = useFinance()
   const totalPages = Math.max(1, Math.ceil(creditCards.length / cardsPerPage))
   const [page, setPage] = useState(0)
@@ -93,6 +98,7 @@ export default function CreditCardsWidget() {
           className="flex h-10 w-10 items-center justify-center rounded-full border border-neutral-300 bg-white transition hover:bg-neutral-100"
           type="button"
           aria-label="Adicionar cartão"
+          onClick={() => onAddAccount?.()}
         >
           <span className="text-2xl leading-none text-neutral-900">+</span>
         </button>
@@ -110,7 +116,10 @@ export default function CreditCardsWidget() {
           return (
             <article
               key={card.id}
-              onClick={() => handleCardClick(card.id)}
+              onClick={() => {
+                handleCardClick(card.id)
+                onCardSelect?.(card.id)
+              }}
               className="flex h-28 cursor-pointer items-center justify-between gap-4 rounded-shape-20 border border-transparent bg-white px-5 py-4 shadow-sm transition duration-200 hover:-translate-y-1 hover:shadow-lg"
             >
               <div
