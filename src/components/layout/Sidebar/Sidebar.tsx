@@ -28,8 +28,8 @@ export default function Sidebar() {
         className={`
           fixed top-0 left-0 h-screen
           bg-surface-500 border-r border-neutral-300
-          flex flex-col justify-between
-          gap-12 p-8 z-40
+          flex flex-col items-start justify-between
+          p-8 z-40
           transition-all duration-300 ease-in-out
           ${isExpanded ? 'w-[300px]' : 'w-[80px]'}
           hidden lg:flex
@@ -38,35 +38,38 @@ export default function Sidebar() {
       >
         {/* Top section: Logo + Navigation */}
         <div className="flex flex-col gap-14 items-start p-0 w-full shrink-0">
-          {/* Logo - apenas quando expandido no topo */}
           {isExpanded && <Logo variant="default" />}
-          
-          {/* Navigation */}
+
           <nav className={`flex flex-col items-start w-full ${isExpanded ? 'gap-0' : 'gap-2'} shrink-0`}>
             <NavItem
               to={ROUTES.DASHBOARD}
               iconSrc={navIcons.home}
+              iconInsetClass="inset-[0.09%_0_-0.03%_0]"
               label="Home"
               isExpanded={isExpanded}
             />
             <NavItem
               to={ROUTES.CARDS}
               iconSrc={navIcons.creditCard}
+              iconInsetClass="inset-[12.5%_0]"
               label="Cartões"
               isExpanded={isExpanded}
             />
           </nav>
-          
-          {/* Logo Small - apenas quando colapsado, aparece após navegação */}
+
           {!isExpanded && <Logo variant="small" className="w-full" />}
         </div>
 
         {/* Bottom section: User Info */}
-        <div className={`flex flex-col gap-3 p-0 shrink-0 ${isExpanded ? 'items-start w-full' : 'items-center w-12'}`}>
+        <div
+          className={`flex flex-col gap-3 p-0 shrink-0 ${
+            isExpanded ? 'items-start w-full' : 'items-center w-12'
+          }`}
+        >
           <UserInfo isExpanded={isExpanded} />
         </div>
 
-        {/* Toggle Button - borda direita (conforme Figma MCP: p-[8px], right-[-17px], top-[31px]) */}
+        {/* Toggle Button */}
         <button
           onClick={toggle}
           className="
@@ -82,11 +85,7 @@ export default function Sidebar() {
           aria-label={isExpanded ? 'Colapsar sidebar' : 'Expandir sidebar'}
         >
           <div className="flex items-center justify-center relative shrink-0">
-            <div
-              className={`flex-none transition-transform duration-300 ${
-                isExpanded ? 'rotate-180' : ''
-              }`}
-            >
+            <div className={`flex-none transition-transform duration-300 ${isExpanded ? 'rotate-180' : ''}`}>
               <div className="overflow-clip relative size-4">
                 <div className="absolute inset-[-0.02%_27.71%_0_24.98%]">
                   <img

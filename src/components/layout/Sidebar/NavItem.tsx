@@ -8,11 +8,12 @@ import { Link, useLocation } from 'react-router-dom'
 type NavItemProps = {
   to: string
   iconSrc: string
+  iconInsetClass: string
   label: string
   isExpanded: boolean
 }
 
-export default function NavItem({ to, iconSrc, label, isExpanded }: NavItemProps) {
+export default function NavItem({ to, iconSrc, iconInsetClass, label, isExpanded }: NavItemProps) {
   const location = useLocation()
   const isActive = location.pathname === to
 
@@ -36,19 +37,14 @@ export default function NavItem({ to, iconSrc, label, isExpanded }: NavItemProps
     >
       {/* Ícone - usa imagem do Figma MCP */}
       <div className="overflow-clip relative shrink-0 size-4">
-        {/* Para Home: inset-[0.09%_0_-0.03%_0], para CreditCard: inset-[12.5%_0] */}
-        <div className={to === '/cards' ? 'absolute inset-[12.5%_0]' : 'absolute inset-[0.09%_0_-0.03%_0]'}>
-          <div className="absolute inset-0" style={{ '--fill-0': 'rgba(7, 11, 19, 1)' } as React.CSSProperties}>
-            <img className="block max-w-none size-full" alt={label} src={iconSrc} />
-          </div>
+        <div className={`absolute ${iconInsetClass}`}>
+          <img className="block max-w-none size-full" alt={label} src={iconSrc} />
         </div>
       </div>
-      
-      {/* Label - apenas quando expandido - Label/Large conforme Figma */}
       {isExpanded && (
-        <p className="font-['Inter:Semi_Bold',sans-serif] font-semibold leading-[24px] not-italic relative shrink-0 text-[18px] text-neutral-1100 tracking-[0.3px] whitespace-nowrap">
+        <span className="label-large text-neutral-1100 whitespace-nowrap relative shrink-0">
           {label}
-        </p>
+        </span>
       )}
       
       {/* Tooltip quando colapsada */}
