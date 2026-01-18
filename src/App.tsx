@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import { useSidebar } from './hooks/useSidebar'
 import Sidebar from './components/layout/Sidebar/Sidebar'
 import MainContainer from './components/layout/MainContainer/MainContainer'
 import Dashboard from './pages/Dashboard'
@@ -7,11 +8,13 @@ import Cards from './pages/Cards'
 import Profile from './pages/Profile'
 
 function App() {
+  const { isExpanded, toggle } = useSidebar()
+
   return (
     <Router>
       <div className="flex min-h-screen">
         {/* Sidebar - apenas no desktop (≥1280px) */}
-        <Sidebar />
+        <Sidebar isExpanded={isExpanded} onToggle={toggle} />
 
         {/* Conteúdo principal */}
         <MainContainer>

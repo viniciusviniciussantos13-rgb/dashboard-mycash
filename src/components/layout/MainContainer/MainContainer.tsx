@@ -25,7 +25,7 @@ export default function MainContainer({ children }: MainContainerProps) {
     return () => window.removeEventListener('resize', checkDesktop)
   }, [])
 
-  const marginLeft = isDesktop ? (isExpanded ? '300px' : '80px') : '0'
+  const marginLeft = isDesktop ? (isExpanded ? '280px' : '96px') : '0'
 
   return (
     <main
