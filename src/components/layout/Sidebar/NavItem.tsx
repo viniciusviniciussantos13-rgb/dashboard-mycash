@@ -36,14 +36,17 @@ export default function NavItem({ to, iconSrc, label, isExpanded }: NavItemProps
     >
       {/* Ícone - usa imagem do Figma MCP */}
       <div className="overflow-clip relative shrink-0 size-4">
-        <div className="absolute inset-[0.09%_0_-0.03%_0]">
-          <img className="block max-w-none size-full" alt={label} src={iconSrc} />
+        {/* Para Home: inset-[0.09%_0_-0.03%_0], para CreditCard: inset-[12.5%_0] */}
+        <div className={to === '/cards' ? 'absolute inset-[12.5%_0]' : 'absolute inset-[0.09%_0_-0.03%_0]'}>
+          <div className="absolute inset-0" style={{ '--fill-0': 'rgba(7, 11, 19, 1)' } as React.CSSProperties}>
+            <img className="block max-w-none size-full" alt={label} src={iconSrc} />
+          </div>
         </div>
       </div>
       
-      {/* Label - apenas quando expandido */}
+      {/* Label - apenas quando expandido - Label/Large conforme Figma */}
       {isExpanded && (
-        <p className="label-large text-inherit whitespace-nowrap relative shrink-0">
+        <p className="font-['Inter:Semi_Bold',sans-serif] font-semibold leading-[24px] not-italic relative shrink-0 text-[18px] text-neutral-1100 tracking-[0.3px] whitespace-nowrap">
           {label}
         </p>
       )}

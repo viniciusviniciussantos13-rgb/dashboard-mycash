@@ -33,15 +33,15 @@ export default function UserInfo({
         />
       </div>
 
-      {/* Informações (apenas quando expandido) */}
+      {/* Informações (apenas quando expandido) - gap-[6px] conforme Figma */}
       {isExpanded && (
-        <div className="flex flex-col gap-1.5 items-start w-[188px] shrink-0">
-          {/* Nome - usando tokens exatos do Figma */}
-          <p className="label-medium text-neutral-1100 whitespace-nowrap h-5 w-[130px] relative shrink-0">
+        <div className="flex flex-col gap-[6px] items-start w-[188px] shrink-0">
+          {/* Nome - Label/Medium conforme Figma */}
+          <p className="font-['Inter:Semi_Bold',sans-serif] font-semibold leading-[20px] not-italic text-[16px] text-neutral-1100 tracking-[0.3px] whitespace-nowrap h-5 w-[130px] relative shrink-0">
             {name}
           </p>
-          {/* Email - usando tokens exatos do Figma */}
-          <p className="paragraph-small text-neutral-1100 h-5 w-full relative shrink-0">
+          {/* Email - Paragraph/Small conforme Figma */}
+          <p className="font-['Inter:Regular',sans-serif] font-normal leading-[20px] not-italic text-[14px] text-neutral-1100 tracking-[0.3px] h-5 w-full relative shrink-0">
             {email}
           </p>
         </div>
