@@ -29,7 +29,8 @@ export default function DashboardHeader() {
         flex flex-col lg:flex-row lg:items-center lg:justify-between
         gap-2 lg:gap-0
         w-full mb-6
-        px-6 pt-6
+        pt-6
+        pl-0 lg:pl-0 pr-6 lg:pr-6
       "
       data-name="Navbar"
     >
