@@ -34,7 +34,7 @@ export default function HeaderMobile() {
           bg-surface-500 border-b border-neutral-300
           flex items-center justify-between
           px-4 z-50
-          hidden lg:hidden
+          lg:hidden
         "
         data-name="HeaderMobile"
       >
