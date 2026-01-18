@@ -33,12 +33,13 @@ export default function MembersWidget() {
           className={`
             relative shrink-0 size-11
             rounded-full overflow-hidden
-            border-2 transition-all duration-200
+            border-2 border-surface-500
+            transition-all duration-200
             hover:scale-110 hover:z-10
             ${
               selectedMember === paiMember.id
                 ? 'border-neutral-1100 z-10 ring-2 ring-primary-500'
-                : 'border-surface-500'
+                : ''
             }
           `}
           aria-label={`Filtrar por ${paiMember.name}`}
@@ -46,6 +47,8 @@ export default function MembersWidget() {
           <img
             src={memberAvatars.pai}
             alt={paiMember.name}
+            height="44"
+            width="44"
             className="block max-w-none size-full rounded-full object-cover"
           />
           {/* Check verde quando selecionado */}
@@ -65,12 +68,13 @@ export default function MembersWidget() {
           className={`
             relative shrink-0 size-11 -ml-2
             rounded-full overflow-hidden
-            border-2 transition-all duration-200
+            border-2 border-surface-500
+            transition-all duration-200
             hover:scale-110 hover:z-10
             ${
               selectedMember === maeMember.id
                 ? 'border-neutral-1100 z-10 ring-2 ring-primary-500'
-                : 'border-surface-500'
+                : ''
             }
           `}
           aria-label={`Filtrar por ${maeMember.name}`}
@@ -78,6 +82,8 @@ export default function MembersWidget() {
           <img
             src={memberAvatars.mae}
             alt={maeMember.name}
+            height="44"
+            width="44"
             className="block max-w-none size-full rounded-full object-cover"
           />
           {/* Check verde quando selecionado */}

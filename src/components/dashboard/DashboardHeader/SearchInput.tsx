@@ -24,9 +24,9 @@ export default function SearchInput({ value, onChange }: SearchInputProps) {
       "
       data-name="search"
     >
-      {/* Ícone de lupa */}
-      <div className="overflow-clip relative shrink-0 size-4" data-name="fi-rr-search">
-        <div className="absolute inset-[-0.13%_0.05%_0.05%_-0.13%]">
+      {/* Ícone de lupa - 16x16px conforme Figma */}
+      <div className="overflow-clip relative shrink-0 size-4" data-name="fi-rr-search" data-node-id="2007:2363">
+        <div className="absolute inset-[-0.13%_0.05%_0.05%_-0.13%]" data-name="icon">
           <img
             alt="Pesquisar"
             className="block max-w-none size-full"

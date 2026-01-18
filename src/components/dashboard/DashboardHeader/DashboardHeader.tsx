@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useFinance } from '@/hooks/useFinance'
+import { headerIcons } from '@/assets/dashboard-assets'
 import SearchInput from './SearchInput'
 import FilterButton from './FilterButton'
 import DatePicker from './DatePicker'
@@ -26,10 +27,10 @@ export default function DashboardHeader() {
     <div
       className="
         flex flex-col lg:flex-row lg:items-center lg:justify-between
-        gap-4 lg:gap-0
+        gap-2 lg:gap-0
         w-full mb-6
       "
-      data-name="DashboardHeader"
+      data-name="Navbar"
     >
       {/* Seção esquerda: Busca, Filtros e Data */}
       <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-2 flex-1">
@@ -44,7 +45,7 @@ export default function DashboardHeader() {
       </div>
 
       {/* Seção direita: Membros e Nova Transação */}
-      <div className="flex items-center gap-2 lg:gap-4">
+      <div className="flex items-center gap-2 lg:gap-2">
         {/* Widget de membros */}
         <MembersWidget />
 
@@ -60,6 +61,7 @@ export default function DashboardHeader() {
             transition-colors duration-200
             w-full sm:w-auto
             justify-center
+            shrink-0
           "
           data-name="Btn"
           onClick={() => {
@@ -67,13 +69,13 @@ export default function DashboardHeader() {
             console.log('Nova transação')
           }}
         >
-          {/* Ícone + */}
-          <div className="overflow-clip relative shrink-0 size-4">
+          {/* Ícone + - 16x16px conforme Figma */}
+          <div className="overflow-clip relative shrink-0 size-4" data-name="fi-rr-plus">
             <div className="absolute inset-0" style={{ fill: 'rgba(255, 255, 255, 1)' }}>
               <img
                 alt="Plus"
                 className="block max-w-none size-full"
-                src="https://www.figma.com/api/mcp/asset/9d78b00c-8749-4483-b60f-356e7968a765"
+                src={headerIcons.plus}
               />
             </div>
           </div>

@@ -45,8 +45,8 @@ export default function FilterButton() {
         aria-label="Filtros"
         aria-expanded={isOpen}
       >
-        {/* Ícone de filtros */}
-        <div className="overflow-clip relative shrink-0 size-4">
+        {/* Ícone de filtros - 16x16px conforme Figma */}
+        <div className="overflow-clip relative shrink-0 size-4" data-name="fi-rr-settings-sliders">
           <img
             alt="Filtros"
             className="block max-w-none size-full"
