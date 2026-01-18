@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { useSidebar } from './hooks/useSidebar'
 import Sidebar from './components/layout/Sidebar/Sidebar'
+import HeaderMobile from './components/layout/HeaderMobile/HeaderMobile'
 import MainContainer from './components/layout/MainContainer/MainContainer'
 import Dashboard from './pages/Dashboard'
 import Transactions from './pages/Transactions'
@@ -13,8 +14,11 @@ function App() {
   return (
     <Router>
       <div className="flex min-h-screen">
-        {/* Sidebar - apenas no desktop (≥1280px) */}
+        {/* Sidebar - apenas no desktop (≥1024px) */}
         <Sidebar isExpanded={isExpanded} onToggle={toggle} />
+
+        {/* HeaderMobile - apenas em mobile/tablet (<1024px) */}
+        <HeaderMobile />
 
         {/* Conteúdo principal */}
         <MainContainer>

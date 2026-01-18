@@ -8,8 +8,9 @@ export default {
     extend: {
       screens: {
         'md': '768px',   // Tablet
-        'lg': '1280px',  // Desktop
-        'xl': '1920px',  // Wide / 4K
+        'lg': '1024px',  // Desktop (PROMPT 3: breakpoint mobile/desktop)
+        'xl': '1280px',  // Desktop grande
+        '2xl': '1920px', // Wide / 4K
       },
       colors: {
         // Primitivas do Figma

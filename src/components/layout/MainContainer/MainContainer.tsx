@@ -16,7 +16,7 @@ export default function MainContainer({ children }: MainContainerProps) {
 
   useEffect(() => {
     const checkDesktop = () => {
-      setIsDesktop(window.innerWidth >= 1280)
+      setIsDesktop(window.innerWidth >= 1024)
     }
     
     checkDesktop()
@@ -25,12 +25,15 @@ export default function MainContainer({ children }: MainContainerProps) {
     return () => window.removeEventListener('resize', checkDesktop)
   }, [])
 
+  // Margin-left apenas no desktop (≥1024px)
+  // Padding-top no mobile/tablet (<1024px) para compensar header fixo
   const marginLeft = isDesktop ? (isExpanded ? '280px' : '96px') : '0'
+  const paddingTop = !isDesktop ? '64px' : '0' // 64px = h-16 (altura do header mobile)
 
   return (
     <main
       className="container-fluid min-h-screen bg-neutral-100 transition-all duration-300 ease-in-out"
-      style={{ marginLeft }}
+      style={{ marginLeft, paddingTop }}
     >
       <div className="container-content py-6">{children}</div>
     </main>
