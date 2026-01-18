@@ -23,7 +23,7 @@ export default function Sidebar({ isExpanded, onToggle }: SidebarProps) {
         fixed top-0 left-0 h-screen
         bg-surface-500 border-r border-neutral-300
         flex flex-col items-start justify-between
-        p-8 z-40
+        p-8 z-30
         transition-all duration-300 ease-in-out
         ${isExpanded ? 'w-[280px]' : 'w-[96px]'}
         hidden lg:flex

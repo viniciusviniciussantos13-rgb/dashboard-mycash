@@ -32,7 +32,7 @@ export default function MainContainer({ children }: MainContainerProps) {
 
   return (
     <main
-      className="min-h-screen bg-neutral-100 transition-all duration-300 ease-in-out w-full"
+      className="min-h-screen bg-neutral-100 transition-all duration-300 ease-in-out w-full relative z-10"
       style={{ marginLeft, paddingTop }}
     >
       <div className="w-full">{children}</div>

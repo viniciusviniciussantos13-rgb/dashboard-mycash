@@ -6,14 +6,14 @@ import DashboardHeader from '@/components/dashboard/DashboardHeader/DashboardHea
  */
 export default function Dashboard() {
   return (
-    <div className="min-h-screen bg-neutral-100 w-full">
-      {/* Header com controles - largura total */}
-      <div className="w-full">
+    <div className="min-h-screen bg-neutral-100 w-full relative">
+      {/* Header com controles - largura total, colado ao sidebar */}
+      <div className="w-full relative">
         <DashboardHeader />
       </div>
 
       {/* Conteúdo do dashboard */}
-      <div className="px-6 pb-6">
+      <div className="px-6 pb-6 relative">
         <div className="mt-6">
           <h1 className="heading-x-small text-neutral-1100 mb-6">
             Dashboard
