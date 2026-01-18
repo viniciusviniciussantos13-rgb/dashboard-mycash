@@ -128,7 +128,7 @@ export default function ExpensesByCategoryCarousel() {
       >
         <div
           ref={containerRef}
-          className="flex gap-4 overflow-x-auto pb-2 scrollbar-none"
+          className="flex gap-4 overflow-x-auto pb-2 scrollbar-hidden"
           onPointerDown={handlePointerDown}
           onPointerMove={handlePointerMove}
           onPointerUp={endDrag}
