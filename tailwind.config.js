@@ -20,7 +20,7 @@ export default {
           '400': '#d1d5db',
           '500': '#9ca3af',
           '900': '#1f2937',
-          '1100': '#080b12',
+          '1100': '#070B13', // Corrigido conforme Figma CSS (#070B13 ao invés de #080b12)
         },
         'blue': {
           '600': '#2a89ef',
@@ -33,7 +33,7 @@ export default {
         },
         // Semânticas do Figma
         'primary': {
-          '500': '#D7FF00',
+          '500': '#CDFF00', // Corrigido conforme Figma CSS (#CDFF00 ao invés de #D7FF00)
         },
         'surface': {
           '500': '#FFFFFF',
@@ -56,6 +56,7 @@ export default {
         '20': '20px',
         '24': '24px',
         '32': '32px',
+        '48': '48px', // Gap principal da sidebar conforme Figma
         '56': '56px',
         '72': '72px',
       },

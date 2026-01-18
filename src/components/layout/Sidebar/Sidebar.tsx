@@ -29,7 +29,7 @@ export default function Sidebar() {
           fixed top-0 left-0 h-screen
           bg-surface-500 border-r border-neutral-300
           flex flex-col justify-between
-          p-8 z-40
+          gap-12 p-8 z-40
           transition-all duration-300 ease-in-out
           ${isExpanded ? 'w-[300px]' : 'w-[80px]'}
           hidden lg:flex
