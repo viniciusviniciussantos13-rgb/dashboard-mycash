@@ -3,6 +3,7 @@ import Logo from './Logo'
 import NavItem from './NavItem'
 import UserInfo from './UserInfo'
 import { ROUTES } from '@/constants/routes'
+import { navIcons } from '@/assets/sidebar-assets'
 
 /**
  * Componente Sidebar - Navegação principal (Desktop)
@@ -14,6 +15,8 @@ import { ROUTES } from '@/constants/routes'
  * Responsividade:
  * - Desktop (≥1280px): sempre visível
  * - Mobile/Tablet (<1280px): não renderiza (ver HeaderMobile)
+ * 
+ * Refatorado conforme Figma MCP - usa assets e tokens exatos do design
  */
 export default function Sidebar() {
   const { isExpanded, toggle } = useSidebar()
@@ -34,59 +37,21 @@ export default function Sidebar() {
         data-sidebar-state={isExpanded ? 'open' : 'close'}
       >
         {/* Top section: Logo + Navigation */}
-        <div className="flex flex-col gap-14 items-start p-0 w-full">
+        <div className="flex flex-col gap-14 items-start p-0 w-full shrink-0">
           {/* Logo - apenas quando expandido no topo */}
           {isExpanded && <Logo variant="default" />}
           
           {/* Navigation */}
-          <nav className={`flex flex-col items-start w-full ${isExpanded ? 'gap-0' : 'gap-2'}`}>
+          <nav className={`flex flex-col items-start w-full ${isExpanded ? 'gap-0' : 'gap-2'} shrink-0`}>
             <NavItem
               to={ROUTES.DASHBOARD}
-              icon={
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    d="M2 8L8 2L14 8M2 14L8 8L14 14"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                </svg>
-              }
+              iconSrc={navIcons.home}
               label="Home"
               isExpanded={isExpanded}
             />
             <NavItem
               to={ROUTES.CARDS}
-              icon={
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 16 16"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect
-                    x="2"
-                    y="4"
-                    width="12"
-                    height="10"
-                    rx="1"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                  <path
-                    d="M2 7H14"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                  />
-                </svg>
-              }
+              iconSrc={navIcons.creditCard}
               label="Cartões"
               isExpanded={isExpanded}
             />
@@ -101,45 +66,40 @@ export default function Sidebar() {
           <UserInfo isExpanded={isExpanded} />
         </div>
 
-        {/* Toggle Button - borda direita */}
+        {/* Toggle Button - borda direita (conforme Figma MCP: p-[8px], right-[-17px], top-[31px]) */}
         <button
           onClick={toggle}
           className="
-            absolute right-[-17px] top-8
-            bg-surface-500 p-2
-            rounded-shape-100 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]
+            absolute bg-surface-500
             flex items-center justify-center
-            size-8 hover:bg-neutral-100
-            transition-colors duration-200
+            p-2
+            right-[-17px] top-8
+            rounded-shape-100 shadow-[0px_4px_4px_0px_rgba(0,0,0,0.25)]
+            hover:bg-neutral-100
+            transition-all duration-200
             z-50
           "
           aria-label={isExpanded ? 'Colapsar sidebar' : 'Expandir sidebar'}
         >
-          <div
-            className={`
-              size-4 transition-transform duration-300
-              ${isExpanded ? 'rotate-180' : ''}
-            `}
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 16 16"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
+          <div className="flex items-center justify-center relative shrink-0">
+            <div
+              className={`flex-none transition-transform duration-300 ${
+                isExpanded ? 'rotate-180' : ''
+              }`}
             >
-              <path
-                d="M6 12L10 8L6 4"
-                stroke="#080b12"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              />
-            </svg>
+              <div className="overflow-clip relative size-4">
+                <div className="absolute inset-[-0.02%_27.71%_0_24.98%]">
+                  <img
+                    className="block max-w-none size-full"
+                    alt={isExpanded ? 'Colapsar' : 'Expandir'}
+                    src={navIcons.toggle}
+                  />
+                </div>
+              </div>
+            </div>
           </div>
         </button>
       </aside>
-
     </>
   )
 }

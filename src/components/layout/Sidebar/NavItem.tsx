@@ -1,18 +1,18 @@
 import { Link, useLocation } from 'react-router-dom'
-import { ReactNode } from 'react'
 
 /**
  * Item de navegação da Sidebar
  * Suporta estados ativo/inativo e tooltip quando sidebar está colapsada
+ * Usa ícones e tokens exatos do Figma MCP
  */
 type NavItemProps = {
   to: string
-  icon: ReactNode
+  iconSrc: string
   label: string
   isExpanded: boolean
 }
 
-export default function NavItem({ to, icon, label, isExpanded }: NavItemProps) {
+export default function NavItem({ to, iconSrc, label, isExpanded }: NavItemProps) {
   const location = useLocation()
   const isActive = location.pathname === to
 
@@ -22,23 +22,30 @@ export default function NavItem({ to, icon, label, isExpanded }: NavItemProps) {
       className={`
         group relative flex items-center
         transition-all duration-300 ease-in-out
+        gap-2
+        px-4 py-3
+        rounded-shape-100
         ${
           isActive
             ? 'bg-primary-500 text-neutral-1100'
             : 'bg-transparent text-neutral-1100 hover:bg-neutral-100'
         }
-        ${isExpanded ? 'gap-2 w-full px-4 py-3' : 'w-12 justify-center px-4 py-3'}
-        rounded-shape-100
+        ${isExpanded ? 'w-full' : 'w-12 justify-center'}
       `}
       title={!isExpanded ? label : undefined}
     >
-      <div
-        className="flex-shrink-0 size-4 text-neutral-1100"
-      >
-        {icon}
+      {/* Ícone - usa imagem do Figma MCP */}
+      <div className="overflow-clip relative shrink-0 size-4">
+        <div className="absolute inset-[0.09%_0_-0.03%_0]">
+          <img className="block max-w-none size-full" alt={label} src={iconSrc} />
+        </div>
       </div>
+      
+      {/* Label - apenas quando expandido */}
       {isExpanded && (
-        <span className="label-large text-inherit whitespace-nowrap">{label}</span>
+        <p className="label-large text-inherit whitespace-nowrap relative shrink-0">
+          {label}
+        </p>
       )}
       
       {/* Tooltip quando colapsada */}

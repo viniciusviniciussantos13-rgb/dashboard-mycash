@@ -1,7 +1,10 @@
+import { memberAvatar } from '@/assets/sidebar-assets'
+
 /**
  * Componente de informações do usuário na Sidebar
  * Mostra avatar, nome e email quando expandido
  * Mostra apenas avatar quando colapsado
+ * Usa imagem do avatar do Figma MCP
  */
 type UserInfoProps = {
   isExpanded: boolean
@@ -16,30 +19,29 @@ export default function UserInfo({
   email = 'viniciusbotelho@gmail.com',
   avatarUrl,
 }: UserInfoProps) {
+  // Usa imagem do Figma MCP se não tiver avatarUrl customizado
+  const avatarSrc = avatarUrl || memberAvatar
+
   return (
     <>
-      {/* Avatar */}
+      {/* Avatar - usa imagem do Figma MCP */}
       <div className="relative shrink-0 size-6">
-        {avatarUrl ? (
-          <img
-            src={avatarUrl}
-            alt={name}
-            className="rounded-full size-full object-cover"
-          />
-        ) : (
-          <div className="rounded-full size-full bg-neutral-300 flex items-center justify-center text-neutral-900 text-xs font-semibold">
-            {name.charAt(0).toUpperCase()}
-          </div>
-        )}
+        <img
+          src={avatarSrc}
+          alt={name}
+          className="block max-w-none size-full rounded-full object-cover"
+        />
       </div>
 
       {/* Informações (apenas quando expandido) */}
       {isExpanded && (
-        <div className="flex flex-col gap-1.5 items-start w-[188px]">
-          <p className="label-medium text-neutral-1100 whitespace-nowrap h-5 w-[130px]">
+        <div className="flex flex-col gap-1.5 items-start w-[188px] shrink-0">
+          {/* Nome - usando tokens exatos do Figma */}
+          <p className="label-medium text-neutral-1100 whitespace-nowrap h-5 w-[130px] relative shrink-0">
             {name}
           </p>
-          <p className="paragraph-small text-neutral-1100 h-5 w-full">
+          {/* Email - usando tokens exatos do Figma */}
+          <p className="paragraph-small text-neutral-1100 h-5 w-full relative shrink-0">
             {email}
           </p>
         </div>
