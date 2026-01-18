@@ -2,6 +2,7 @@ import DashboardHeader from '@/components/dashboard/DashboardHeader/DashboardHea
 import SummaryCards from '@/components/dashboard/SummaryCards/SummaryCards'
 import ExpensesByCategoryCarousel from '@/components/dashboard/ExpensesByCategoryCarousel/ExpensesByCategoryCarousel'
 import FinancialFlowChart from '@/components/dashboard/FinancialFlowChart/FinancialFlowChart'
+import CreditCardsWidget from '@/components/dashboard/CreditCardsWidget/CreditCardsWidget'
 
 /**
  * Página principal do Dashboard
@@ -20,6 +21,7 @@ export default function Dashboard() {
         <SummaryCards />
         <ExpensesByCategoryCarousel />
         <FinancialFlowChart />
+        <CreditCardsWidget />
 
         <div className="w-full max-w-[1400px]">
           <div className="mt-6">
