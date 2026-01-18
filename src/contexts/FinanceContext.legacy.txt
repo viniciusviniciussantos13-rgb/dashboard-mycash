@@ -1,0 +1,430 @@
+import { createContext, ReactNode, useCallback, useEffect, useMemo, useReducer } from 'react'
+import { supabase } from '@/lib/supabaseClient'
+import { INCOME_CATEGORIES, EXPENSE_CATEGORIES } from '@/constants/categories'
+import { useAuth } from '@/hooks/useAuth'
+import {
+  Transaction,
+  Goal,
+  CreditCard,
+  BankAccount,
+  FamilyMember,
+  TransactionStatus,
+} from '@/types'
+import { financeReducer, initialState, FinanceState } from './financeReducer'
+
+/**
+ * Context Type - Tipo do contexto financeiro
+ */
+export interface FinanceContextType {
+  transactions: Transaction[]
+  goals: Goal[]
+  creditCards: CreditCard[]
+  bankAccounts: BankAccount[]
+  familyMembers: FamilyMember[]
+  selectedMember: string | null
+  dateRange: {
+    startDate: Date | null
+    endDate: Date | null
+  }
+  transactionType: 'all' | 'income' | 'expense'
+  searchText: string
+  addTransaction: (transaction: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt'>) => Promise<void>
+  updateTransaction: (id: string, updates: Partial<Transaction>) => Promise<void>
+  deleteTransaction: (id: string) => Promise<void>
+  addGoal: (goal: Omit<Goal, 'id' | 'createdAt' | 'updatedAt'>) => Promise<void>
+  updateGoal: (id: string, updates: Partial<Goal>) => Promise<void>
+  deleteGoal: (id: string) => Promise<void>
+  addCreditCard: (card: Omit<CreditCard, 'id' | 'createdAt' | 'updatedAt'>) => Promise<void>
+  updateCreditCard: (id: string, updates: Partial<CreditCard>) => Promise<void>
+  deleteCreditCard: (id: string) => Promise<void>
+  addBankAccount: (account: Omit<BankAccount, 'id' | 'createdAt' | 'updatedAt'>) => Promise<void>
+  updateBankAccount: (id: string, updates: Partial<BankAccount>) => Promise<void>
+  deleteBankAccount: (id: string) => Promise<void>
+  addFamilyMember: (member: Omit<FamilyMember, 'id' | 'createdAt' | 'updatedAt'>) => Promise<void>
+  updateFamilyMember: (id: string, updates: Partial<FamilyMember>) => Promise<void>
+  deleteFamilyMember: (id: string) => Promise<void>
+  setSelectedMember: (memberId: string | null) => void
+  setDateRange: (startDate: Date | null, endDate: Date | null) => void
+  setTransactionType: (type: 'all' | 'income' | 'expense') => void
+  setSearchText: (text: string) => void
+  getFilteredTransactions: () => Transaction[]
+  calculateTotalBalance: () => number
+  calculateIncomeForPeriod: () => number
+  calculateExpensesForPeriod: () => number
+  calculateExpensesByCategory: () => Array<{ category: string; amount: number }>
+  calculateCategoryPercentage: (category: string) => number
+  calculateSavingsRate: () => number
+}
+
+export const FinanceContext = createContext<FinanceContextType | undefined>(undefined)
+
+type ProviderProps = {
+  children: ReactNode
+}
+
+const defaultCategoryList = [
+  ...INCOME_CATEGORIES.map((name) => ({ name, type: 'INCOME' as const })),
+  ...EXPENSE_CATEGORIES.map((name) => ({ name, type: 'EXPENSE' as const })),
+]
+
+const formatDateToISO = (value: Date | string) => {
+  if (value instanceof Date) {
+    return value.toISOString().split('T')[0]
+  }
+  return value
+}
+
+const toTransactionStatus = (status?: string): TransactionStatus => {
+  if (!status) return 'pending'
+  const normalized = status.toLowerCase()
+  if (normalized === 'completed') return 'completed'
+  if (normalized === 'pending') return 'pending'
+  return 'pending'
+}
+
+type TransactionRecord = {
+  id: string
+  amount: number
+  type: 'INCOME' | 'EXPENSE'
+  description: string
+  date: string
+  account_id: string | null
+  member_id: string | null
+  total_installments: number | null
+  installment_number: number | null
+  status: 'COMPLETED' | 'PENDING'
+  is_recurring: boolean
+  created_at: string
+  updated_at: string
+  category?: { name: string }
+}
+
+type AccountRecord = {
+  id: string
+  name: string
+  type: 'CHECKING' | 'SAVINGS' | 'CREDIT_CARD'
+  holder_id: string
+  balance: number | null
+  credit_limit: number | null
+  current_bill: number | null
+  closing_day: number | null
+  due_day: number | null
+  theme: string | null
+  last_digits: string | null
+  created_at: string
+  updated_at: string
+}
+
+type MemberRecord = {
+  id: string
+  name: string
+  role: string
+  avatar_url: string | null
+  email: string | null
+  monthly_income: number | null
+  created_at: string
+  updated_at: string
+}
+
+type GoalRecord = {
+  id: string
+  title: string
+  description: string | null
+  target_amount: number
+  current_amount: number
+  deadline: string
+  category: string | null
+  member_id: string | null
+  is_completed: boolean
+  created_at: string
+  updated_at: string
+}
+
+const mapTransaction = (row: TransactionRecord): Transaction => ({
+  id: row.id,
+  amount: Number(row.amount),
+  type: row.type === 'INCOME' ? 'income' : 'expense',
+  description: row.description,
+  category: row.category?.name ?? 'Sem categoria',
+  date: new Date(row.date),
+  accountId: row.account_id ?? '',
+  memberId: row.member_id,
+  installments: row.total_installments ?? 1,
+  currentInstallment: row.installment_number ?? undefined,
+  status: toTransactionStatus(row.status),
+  isRecurring: row.is_recurring,
+  isPaid: row.status === 'COMPLETED',
+  createdAt: new Date(row.created_at),
+  updatedAt: new Date(row.updated_at),
+})
+
+const mapCreditCard = (record: AccountRecord): CreditCard => ({
+  id: record.id,
+  name: record.name,
+  holderId: record.holder_id,
+  closingDay: record.closing_day ?? 0,
+  dueDay: record.due_day ?? 0,
+  limit: Number(record.credit_limit ?? 0),
+  currentBill: Number(record.current_bill ?? 0),
+  theme: (record.theme as CreditCard['theme']) ?? 'black',
+  lastDigits: record.last_digits ?? undefined,
+  createdAt: new Date(record.created_at),
+  updatedAt: new Date(record.updated_at),
+})
+
+const mapBankAccount = (record: AccountRecord): BankAccount => ({
+  id: record.id,
+  name: record.name,
+  holderId: record.holder_id,
+  balance: Number(record.balance ?? 0),
+  type: record.type === 'CHECKING' ? 'corrente' : 'poupança',
+  createdAt: new Date(record.created_at),
+  updatedAt: new Date(record.updated_at),
+})
+
+const mapFamilyMember = (record: MemberRecord): FamilyMember => ({
+  id: record.id,
+  name: record.name,
+  role: record.role,
+  avatarUrl: record.avatar_url ?? undefined,
+  email: record.email ?? undefined,
+  monthlyIncome: record.monthly_income ?? undefined,
+  createdAt: new Date(record.created_at),
+  updatedAt: new Date(record.updated_at),
+})
+
+const mapGoal = (record: GoalRecord): Goal => ({
+  id: record.id,
+  title: record.title,
+  description: record.description ?? undefined,
+  targetAmount: Number(record.target_amount),
+  currentAmount: Number(record.current_amount),
+  deadline: new Date(record.deadline),
+  category: record.category ?? undefined,
+  memberId: record.member_id,
+  isCompleted: record.is_completed,
+  createdAt: new Date(record.created_at),
+  updatedAt: new Date(record.updated_at),
+})
+
+export function FinanceProvider({ children }: ProviderProps) {
+  const { user } = useAuth()
+  const [state, dispatch] = useReducer(financeReducer, initialState)
+
+  const fallbackUserId = useMemo(() => {
+    const fallback = import.meta.env.VITE_SUPABASE_DEFAULT_USER_ID ?? ''
+    return fallback.trim() || null
+  }, [])
+
+  const effectiveUserId = user?.id ?? fallbackUserId
+
+  const ensureDefaultCategories = useCallback(
+    async (userId: string) => {
+      const { data, error } = await supabase.from('categories').select('name').eq('user_id', userId)
+      if (error) {
+        console.error('Não foi possível carregar categorias', error.message)
+        return
+      }
+      const existing = new Set(data?.map((item) => item.name.toLowerCase()))
+      const newCategories = defaultCategoryList.filter(
+        (category) => !existing.has(category.name.toLowerCase())
+      )
+      if (!newCategories.length) return
+      await supabase.from('categories').insert(
+        newCategories.map((category) => ({
+          user_id: userId,
+          name: category.name,
+          type: category.type,
+          icon: '📌',
+        }))
+      )
+    },
+    []
+  )
+
+  const fetchAllData = useCallback(async () => {
+    if (!effectiveUserId) {
+      dispatch({
+        type: 'SET_DATA',
+        payload: {
+          transactions: [],
+          goals: [],
+          creditCards: [],
+          bankAccounts: [],
+          familyMembers: [],
+        },
+      })
+      return
+    }
+
+    await ensureDefaultCategories(effectiveUserId)
+
+    const [transactionsRes, accountsRes, membersRes, goalsRes] = await Promise.all([
+      supabase
+        .from('transactions')
+        .select('*, category:categories (name)')
+        .eq('user_id', effectiveUserId)
+        .order('date', { ascending: false }),
+      supabase.from('accounts').select('*').eq('user_id', effectiveUserId).order('created_at'),
+      supabase.from('family_members').select('*').eq('user_id', effectiveUserId).order('created_at'),
+      supabase.from('goals').select('*').eq('user_id', effectiveUserId).order('created_at'),
+    ])
+
+    const transactions = (transactionsRes.data ?? []).map(mapTransaction)
+    const accountRows = accountsRes.data ?? []
+    const creditCards = accountRows.filter((account) => account.type === 'CREDIT_CARD').map(mapCreditCard)
+    const bankAccounts = accountRows.filter((account) => account.type !== 'CREDIT_CARD').map(mapBankAccount)
+    const familyMembers = (membersRes.data ?? []).map(mapFamilyMember)
+    const goals = (goalsRes.data ?? []).map(mapGoal)
+
+    dispatch({
+      type: 'SET_DATA',
+      payload: {
+        transactions,
+        goals,
+        creditCards,
+        bankAccounts,
+        familyMembers,
+      },
+    })
+  }, [effectiveUserId, ensureDefaultCategories])
+
+  useEffect(() => {
+    fetchAllData()
+  }, [fetchAllData])
+
+  const ensureCategory = useCallback(
+    async (categoryName: string, type: 'income' | 'expense') => {
+      if (!effectiveUserId || !categoryName.trim()) return null
+      const normalized = categoryName.trim()
+      const { data, error } = await supabase
+        .from('categories')
+        .select('id')
+        .eq('user_id', effectiveUserId)
+        .ilike('name', normalized)
+        .limit(1)
+
+      if (error) {
+        console.error('Erro ao buscar categoria', error.message)
+        return null
+      }
+
+      if (data && data.length) {
+        return data[0].id
+      }
+
+      const { data: created, error: insertError } = await supabase
+        .from('categories')
+        .insert({
+          user_id: effectiveUserId,
+          name: normalized,
+          type: type === 'income' ? 'INCOME' : 'EXPENSE',
+          icon: '📌',
+        })
+        .select()
+        .single()
+
+      if (insertError) {
+        console.error('Erro ao criar categoria', insertError.message)
+        return null
+      }
+
+      return created?.id ?? null
+    },
+    [effectiveUserId]
+  )
+
+  const addTransaction = useCallback(
+    async (transaction: Omit<Transaction, 'id' | 'createdAt' | 'updatedAt'>) => {
+      if (!effectiveUserId) return
+      const categoryId = await ensureCategory(transaction.category, transaction.type)
+      const { data, error } = await supabase
+        .from('transactions')
+        .insert({
+          user_id: effectiveUserId,
+          type: transaction.type === 'income' ? 'INCOME' : 'EXPENSE',
+          amount: transaction.amount,
+          description: transaction.description,
+          date: formatDateToISO(transaction.date),
+          account_id: transaction.accountId || null,
+          member_id: transaction.memberId,
+          total_installments: transaction.installments || 1,
+          installment_number: transaction.currentInstallment ?? 1,
+          status: transaction.status.toUpperCase(),
+          is_recurring: transaction.isRecurring,
+          category_id: categoryId,
+        })
+        .select()
+        .single()
+
+      if (error) {
+        console.error('Erro ao adicionar transação', error.message)
+        return
+      }
+
+      if (data) {
+        dispatch({ type: 'ADD_TRANSACTION', payload: mapTransaction(data) })
+      }
+    },
+    [effectiveUserId, ensureCategory]
+  )
+
+  const updateTransaction = useCallback(
+    async (id: string, updates: Partial<Transaction>) => {
+      if (!effectiveUserId) return
+      const payload: Record<string, unknown> = {}
+      if (updates.description !== undefined) payload.description = updates.description
+      if (updates.amount !== undefined) payload.amount = updates.amount
+      if (updates.date) payload.date = formatDateToISO(updates.date)
+      if (updates.accountId !== undefined) payload.account_id = updates.accountId || null
+      if (updates.memberId !== undefined) payload.member_id = updates.memberId
+      if (updates.installments !== undefined) payload.total_installments = updates.installments
+      if (updates.currentInstallment !== undefined)
+        payload.installment_number = updates.currentInstallment
+      if (updates.status) payload.status = updates.status.toUpperCase()
+      if (updates.isRecurring !== undefined) payload.is_recurring = updates.isRecurring
+      if (updates.type) payload.type = updates.type === 'income' ? 'INCOME' : 'EXPENSE'
+
+      if (updates.category) {
+        const categoryId = await ensureCategory(updates.category, updates.type ?? 'expense')
+        payload.category_id = categoryId
+      }
+
+      const { data, error } = await supabase
+        .from('transactions')
+        .update(payload)
+        .eq('id', id)
+        .select()
+        .single()
+
+      if (error) {
+        console.error('Erro ao atualizar transação', error.message)
+        return
+      }
+
+      if (data) {
+        dispatch({ type: 'UPDATE_TRANSACTION', payload: { id, updates: mapTransaction(data) } })
+      }
+    },
+    [effectiveUserId, ensureCategory]
+  )
+
+  const deleteTransaction = useCallback(
+    async (id: string) => {
+      if (!effectiveUserId) return
+      const { error } = await supabase.from('transactions').delete().eq('id', id)
+      if (error) {
+        console.error('Erro ao remover transação', error.message)
+        return
+      }
+      dispatch({ type: 'DELETE_TRANSACTION', payload: { id } })
+    },
+    [effectiveUserId]
+  )
+
+  const addFamilyMember = useCallback(
+    async (member: Omit<FamilyMember, 'id' | 'createdAt' | 'updatedAt'>) => {
+      if (!effectiveUserId) return
+      const { data, error } = await supabase
+        .from('family_members')
+        .insert({

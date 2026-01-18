@@ -25,7 +25,7 @@ export default function AddAccountCardModal({ open, onClose }: Props) {
 
   if (!open) return null
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const nextErrors: Record<string, string> = {}
     if (name.trim().length < 3) nextErrors.name = 'Informe um nome válido'
     if (!holderId) nextErrors.holder = 'Selecione um titular'
@@ -44,29 +44,43 @@ export default function AddAccountCardModal({ open, onClose }: Props) {
     if (Object.keys(nextErrors).length) return
 
     if (type === 'account') {
-      addBankAccount({
-        name: name.trim(),
-        holderId,
-        balance: Number(balance),
-      })
-      setToast('Conta adicionada com sucesso!')
+      try {
+        await addBankAccount({
+          name: name.trim(),
+          holderId,
+          balance: Number(balance),
+        })
+        setToast('Conta adicionada com sucesso!')
+        setTimeout(() => {
+          setToast('')
+          onClose()
+        }, 1200)
+      } catch (error) {
+        setToast('Falha ao adicionar conta.')
+        console.error(error)
+      }
     } else {
-      addCreditCard({
-        name: name.trim(),
-        holderId,
-        closingDay: Number(closingDay),
-        dueDay: Number(dueDay),
-        limit: Number(limit),
-        currentBill: 0,
-        theme,
-        lastDigits: lastDigits || undefined,
-      })
-      setToast('Cartão adicionado com sucesso!')
+      try {
+        await addCreditCard({
+          name: name.trim(),
+          holderId,
+          closingDay: Number(closingDay),
+          dueDay: Number(dueDay),
+          limit: Number(limit),
+          currentBill: 0,
+          theme,
+          lastDigits: lastDigits || undefined,
+        })
+        setToast('Cartão adicionado com sucesso!')
+        setTimeout(() => {
+          setToast('')
+          onClose()
+        }, 1200)
+      } catch (error) {
+        setToast('Falha ao adicionar cartão.')
+        console.error(error)
+      }
     }
-    setTimeout(() => {
-      setToast('')
-      onClose()
-    }, 1200)
   }
 
   return (

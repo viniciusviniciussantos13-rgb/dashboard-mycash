@@ -1,5 +1,6 @@
 import { type ChangeEvent, useRef, useState } from 'react'
 import { useFinance } from '@/hooks/useFinance'
+import { uploadFileToStorage, STORAGE_BUCKET } from '@/lib/storage'
 
 const ROLE_SUGGESTIONS = ['Pai', 'Mãe', 'Filho', 'Filha', 'Avô', 'Avó', 'Tio', 'Tia']
 
@@ -15,6 +16,7 @@ export default function AddMemberModal({ open, onClose }: Props) {
   const [income, setIncome] = useState('')
   const [avatarType, setAvatarType] = useState<'url' | 'upload'>('url')
   const [avatarValue, setAvatarValue] = useState('')
+  const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [errors, setErrors] = useState<Record<string, string>>({})
   const [toast, setToast] = useState('')
   const fileInputRef = useRef<HTMLInputElement>(null)
@@ -26,13 +28,17 @@ export default function AddMemberModal({ open, onClose }: Props) {
     setRole('')
     setIncome('')
     setAvatarValue('')
+    setSelectedFile(null)
     setErrors({})
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const nextErrors: Record<string, string> = {}
     if (name.trim().length < 3) nextErrors.name = 'Por favor, insira um nome válido'
     if (!role.trim()) nextErrors.role = 'Por favor, informe a função na família'
+    if (avatarType === 'upload' && !selectedFile) {
+      nextErrors.avatar = 'Faça upload de um avatar.'
+    }
     setErrors(nextErrors)
     if (Object.keys(nextErrors).length) return
 
@@ -46,13 +52,30 @@ export default function AddMemberModal({ open, onClose }: Props) {
       updatedAt: new Date(),
     }
 
-    addFamilyMember(newMember)
-    setToast('Membro adicionado com sucesso!')
-    reset()
-    setTimeout(() => {
-      setToast('')
-      onClose()
-    }, 1200)
+    let resolvedAvatarUrl = avatarValue || undefined
+    if (avatarType === 'upload' && selectedFile) {
+      try {
+        const fileName = `${crypto.randomUUID()}_${selectedFile.name}`
+        resolvedAvatarUrl = await uploadFileToStorage(STORAGE_BUCKET, `members/${fileName}`, selectedFile)
+      } catch (uploadError) {
+        setToast('Falha ao subir o avatar.')
+        console.error(uploadError)
+        return
+      }
+    }
+
+    try {
+      await addFamilyMember({ ...newMember, avatarUrl: resolvedAvatarUrl })
+      setToast('Membro adicionado com sucesso!')
+      reset()
+      setTimeout(() => {
+        setToast('')
+        onClose()
+      }, 1200)
+    } catch (error) {
+      setToast('Falha ao adicionar membro.')
+      console.error(error)
+    }
   }
 
   const handleUpload = (event: ChangeEvent<HTMLInputElement>) => {
@@ -62,11 +85,12 @@ export default function AddMemberModal({ open, onClose }: Props) {
       setErrors((prev) => ({ ...prev, avatar: 'Arquivo deve ter até 5MB' }))
       return
     }
-    const reader = new FileReader()
-    reader.onload = () => {
-      setAvatarValue(reader.result as string)
-    }
-    reader.readAsDataURL(file)
+    setSelectedFile(file)
+    setErrors((prev) => {
+      const next = { ...prev }
+      delete next.avatar
+      return next
+    })
   }
 
   return (

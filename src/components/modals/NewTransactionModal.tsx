@@ -43,7 +43,7 @@ export default function NewTransactionModal({ open, onClose }: Props) {
     return [...base, ...customCategories.filter((cat) => !base.includes(cat))]
   }, [type, customCategories])
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const parsedValue = Number(value.replace(',', '.'))
     const newErrors: Record<string, string> = {}
     if (!(parsedValue > 0)) newErrors.value = 'Valor deve ser maior que zero.'
@@ -56,7 +56,8 @@ export default function NewTransactionModal({ open, onClose }: Props) {
     const account = creditCards.find((card) => card.id === accountId)
     const installmentsCount = account && type === 'expense' ? Number(installments) : 1
 
-    addTransaction({
+    try {
+      await addTransaction({
       type,
       amount: parsedValue,
       description,
@@ -71,12 +72,16 @@ export default function NewTransactionModal({ open, onClose }: Props) {
       isPaid: false,
     })
 
-    setToast('Transação registrada com sucesso!')
-    reset()
-    setTimeout(() => {
-      setToast('')
-      onClose()
-    }, 1200)
+      setToast('Transação registrada com sucesso!')
+      reset()
+      setTimeout(() => {
+        setToast('')
+        onClose()
+      }, 1200)
+    } catch (error) {
+      setToast('Não foi possível salvar a transação.')
+      console.error(error)
+    }
   }
 
   const reset = () => {

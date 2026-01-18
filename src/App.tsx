@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
 import { FinanceProvider } from './contexts/FinanceContext'
+import { AuthProvider } from './contexts/AuthContext'
 import { MobileFiltersProvider, useMobileFilters } from './contexts/MobileFiltersContext'
 import { useSidebar } from './hooks/useSidebar'
 import Sidebar from './components/layout/Sidebar/Sidebar'
@@ -15,7 +16,8 @@ function App() {
   const { isExpanded, toggle } = useSidebar()
 
   return (
-    <FinanceProvider>
+    <AuthProvider>
+      <FinanceProvider>
       <MobileFiltersProvider>
         <FiltersModalLayer />
         <Router>
@@ -33,7 +35,8 @@ function App() {
           </div>
         </Router>
       </MobileFiltersProvider>
-    </FinanceProvider>
+      </FinanceProvider>
+    </AuthProvider>
   )
 }
 
