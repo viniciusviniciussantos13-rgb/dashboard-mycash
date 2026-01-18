@@ -17,11 +17,28 @@ export default function Dashboard() {
       </div>
 
       {/* Conteúdo do dashboard */}
-      <div className="w-full px-4 md:px-6 lg:px-8 pb-6 flex flex-col gap-6">
-        <SummaryCards />
-        <ExpensesByCategoryCarousel />
-        <FinancialFlowChart />
-        <CreditCardsWidget />
+      <div className="w-full px-4 md:px-6 lg:px-8 pb-8">
+        <div className="flex flex-col gap-8">
+          <div className="grid gap-8 lg:grid-cols-[2fr_1fr]">
+            <div className="flex flex-col gap-8">
+              <SummaryCards />
+              <ExpensesByCategoryCarousel />
+            </div>
+            <CreditCardsWidget />
+          </div>
+
+          <div className="grid gap-8 lg:grid-cols-[2fr_1fr]">
+            <FinancialFlowChart />
+            <div className="flex flex-col gap-8">
+              <div className="flex h-full w-full flex-col items-start gap-4 rounded-shape-20 border border-neutral-300 bg-surface-500 p-8">
+                <h4 className="text-sm font-semibold text-neutral-900">Próximas despesas</h4>
+                <p className="text-xs text-neutral-500">
+                  Este espaço será preenchido com a lista detalhada quando o próximo prompt for implementado.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
 
         <div className="w-full max-w-[1400px]">
           <div className="mt-6">
